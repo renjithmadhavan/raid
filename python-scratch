@@ -1,0 +1,288 @@
+Writing to a file
+=======================
+
+text = 'Sample Text to Save\nNew line!'
+
+# notifies Python that you are opening this file, with the intention to write
+saveFile = open('exampleFile.txt','w')
+
+# actually writes the information
+saveFile.write(text)
+
+# It is important to remember to actually close the file, otherwise it will
+# hang for a while and could cause problems in your script
+saveFile.close()
+
+Appending a file
+==========================
+appendMe = '\nNew bit of information'
+
+appendFile = open('exampleFile.txt','a')
+appendFile.write(appendMe)
+appendFile.close()
+
+Reading lines
+===============================
+
+# similar syntax as you've seen, 'r' for read. You can just throw a .read() at
+# the end, and you get:
+readMe = open('exampleFile.txt','r').read()
+print(readMe)
+
+# this will instead read the file into a python list. 
+readMe = open('exampleFile.txt','r').readlines()
+print(readMe)
+
+if __name__ == '__main__':
+    print('such great module!!!!')
+    
+    
+Multiline print
+====================
+
+print(''' 
+
+This is a massive print, where you want to
+use multiple lines, maybe make designs, or
+something like that. 
+
+''')
+
+USer Input
+=========================
+
+x = input('What is your name?: ')
+print('Hello',x)
+
+List 
+===========================
+
+x = [1,6,3,2,6,1,2,6,7]
+# lets add something.
+# we can do .append, which will add something to the end of the list, like:
+x.append(55)
+print(x)
+
+x.insert(2,33)
+print(x)
+
+x.remove(6)
+print(x)
+
+print(x.index(1))
+print(x.count(1))
+x.sort()
+y = ['Jan','Dan','Bob','Alice','Jon','Jack']
+y.sort()
+print(y)
+y.reverse()
+print(y)
+
+Reading csv files
+=================================
+
+import csv
+
+with open('example.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=',')
+    dates = []
+    colors = []
+    for row in readCSV:
+        color = row[3]
+        date = row[0]
+
+        dates.append(date)
+        colors.append(color)
+
+    print(dates)
+    print(colors)
+
+    # now, remember our lists?
+
+    whatColor = input('What color do you wish to know the date of?:')
+    coldex = colors.index(whatColor)
+    theDate = dates[coldex]
+    print('The date of',whatColor,'is:',theDate)
+    
+Exception Handling
+====================================
+
+with open('example.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=',')
+    dates = []
+    colors = []
+    for row in readCSV:
+        color = row[3]
+        date = row[0]
+
+        dates.append(date)
+        colors.append(color)
+
+    print(dates)
+    print(colors)
+
+    # we could put the try anywhere. The weak point, however, starts
+    # in my opinion immediately when we accept user input... no longer
+    # is this is a closed-program, so I would personally code this block
+    # here, but you could put the try right about the print statement
+    # of where we search for the color and we KNOW it will throw an error
+    # if not in the list. 
+    try:
+        whatColor = input('What color do you wish to know the date of?:')
+
+        if whatColor in colors:
+            coldex = colors.index(whatColor)
+            theDate = dates[coldex]
+            print('The date of',whatColor,'is:',theDate)
+        else:
+            # now we can handle a specific scenario, instead
+            # of handling it with a "catch-all" error.
+            # now we have error handling and
+            # proper logic. Yay.
+            print('This color was not found.')
+
+    # in python 2, this is read exception Exception, e. It's just helpful
+    # to know this for porting old scripts if you need to.
+
+
+    except Exception as e:
+        print(e)
+        
+
+Dictionaries
+============================
+
+exDict = {'Jack':15,'Bob':22,'Alice':12,'Kevin':17}
+del exDict['Tim']
+
+
+OS Module
+============================
+import os
+os.getcwd()
+os.mkdir('newDir')
+os.rename('newDir','newDir2')
+os.rmdir('newDir2')
+
+sys module
+==============================
+import sys
+sys.stderr.write('This is stderr text\n')
+sys.stderr.flush()
+sys.stdout.write('This is stdout text\n')
+def main(arg):
+    print(arg)
+
+main(sys.argv[1])
+
+urllib
+===============================
+#Used to make requests
+import urllib.request
+
+x = urllib.request.urlopen('https://www.google.com/')
+print(x.read())
+
+import urllib.parse
+
+
+url = 'https://www.google.com/search'
+values = {'q' : 'python programming tutorials'}
+
+data = urllib.parse.urlencode(values)
+data = data.encode('utf-8') # data should be bytes
+req = urllib.request.Request(url, data)
+resp = urllib.request.urlopen(req)
+respData = resp.read()
+
+print(respData)
+
+
+try:
+    url = 'https://www.google.com/search?q=python'
+
+    # now, with the below headers, we defined ourselves as a simpleton who is
+    # still using internet explorer.
+    headers = {}
+    headers['User-Agent'] = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"
+    req = urllib.request.Request(url, headers = headers)
+    resp = urllib.request.urlopen(req)
+    respData = resp.read()
+
+    saveFile = open('withHeaders.txt','w')
+    saveFile.write(str(respData))
+    saveFile.close()
+except Exception as e:
+    print(str(e))
+    
+    
+Regular expressions
+==============================
+
+import re
+ages = re.findall(r'\d{1,3}',exampleString)
+names = re.findall(r'[A-Z][a-z]*',exampleString)
+
+import urllib.request
+import re
+
+url = 'http://pythonprogramming.net/parse-website-using-regular-expressions-urllib/'
+
+req = urllib.request.Request(url)
+resp = urllib.request.urlopen(req)
+respData = resp.read()
+
+paragraphs = re.findall(r'<p>(.*?)</p>',str(respData))
+for eachP in paragraphs:
+    print(eachP)
+
+Threading
+============================
+
+import threading
+from queue import Queue
+import time
+
+print_lock = threading.Lock()
+def exampleJob(worker):
+    time.sleep(.5) # pretend to do some work.
+    with print_lock:
+        print(threading.current_thread().name,worker)
+  
+# The threader thread pulls an worker from the queue and processes it
+def threader():
+    while True:
+        # gets an worker from the queue
+        worker = q.get()
+
+        # Run the example job with the avail worker in queue (thread)
+        exampleJob(worker)
+
+        # completed with the job
+        q.task_done()
+q = Queue()
+
+# how many threads are we going to allow for
+for x in range(10):
+     t = threading.Thread(target=threader)
+
+     # classifying as a daemon, so they will die when the main dies
+     t.daemon = True
+
+     # begins, must come after daemon definition
+     t.start()
+
+start = time.time()
+
+# 20 jobs assigned.
+for worker in range(20):
+    q.put(worker)
+
+# wait until the thread terminates.
+q.join()
+
+# with 10 workers and 20 tasks, with each task being .5 seconds, then the completed job
+# is ~1 second using threading. Normally 20 tasks with .5 seconds each would take 10 seconds.
+print('Entire job took:',time.time() - start)
+
+
