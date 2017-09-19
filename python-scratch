@@ -155,7 +155,6 @@ Dictionaries
 exDict = {'Jack':15,'Bob':22,'Alice':12,'Kevin':17}
 del exDict['Tim']
 
-
 OS Module
 ============================
 import os
@@ -163,6 +162,74 @@ os.getcwd()
 os.mkdir('newDir')
 os.rename('newDir','newDir2')
 os.rmdir('newDir2')
+
+names = ['Jeff', 'Gary', 'Jill', 'Samantha']
+print(', '.join(names))
+
+location_of_files = 'C:\\Users\\H\\Desktop\\Intermediate Python'
+file_name = 'example.txt'
+
+with open(os.path.join(location_of_files, file_name)) as f:
+    print(f.read())
+    
+who = 'Gary'
+how_many = 12
+
+print('{} bought {} apples today!'.format(who, how_many))   
+===================================================
+import argparse
+import sys
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--x', type=float, default=1.0,
+                        help='What is the first number?')
+    parser.add_argument('--y', type=float, default=1.0,
+                        help='What is the second number?')
+    parser.add_argument('--operation', type=str, default='add',
+                        help='What operation? Can choose add, sub, mul, or div')
+    args = parser.parse_args()
+    sys.stdout.write(str(calc(args)))
+    
+def calc(args):
+    if args.operation == 'add':
+        return args.x + args.y
+    elif args.operation == 'sub':
+        return args.x - args.y
+    elif args.operation == 'mul':
+        return args.x * args.y
+    elif args.operation == 'div':
+        return args.x / args.y
+
+if __name__ == '__main__':
+    main()
+    
+    
+===================================================    
+    
+example_dict = {'left':'<','right':'>','up':'^','down':'v',}
+[print(i,j) for i,j in enumerate(example_dict)]
+
+new_dict = dict(enumerate(example))
+print(new_dict)
+
+x = [1,2,3,4]
+y = [7,8,3,2]
+z = ['a','b','c','d']
+for a,b in zip(x,y):
+    print(a,b)
+    
+x = [1,2,3,4]
+y = [7,8,3,2]
+z = ['a','b','c','d']
+
+[print(x,y,z) for x,y,z in zip(x,y,z)]
+=====================================
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logging.basicConfig(filename='logfile.log',level=logging.INFO)
+
 
 sys module
 ==============================
@@ -284,5 +351,73 @@ q.join()
 # with 10 workers and 20 tasks, with each task being .5 seconds, then the completed job
 # is ~1 second using threading. Normally 20 tasks with .5 seconds each would take 10 seconds.
 print('Entire job took:',time.time() - start)
+
+Matplotlib
+==================
+from matplotlib import pyplot as plt
+from matplotlib import style
+import numpy as np
+
+style.use('ggplot')
+
+x,y = np.loadtxt('exampleFile.csv',
+                 unpack=True,
+                 delimiter = ',')
+
+plt.plot(x,y)
+
+plt.title('Epic Info')
+plt.ylabel('Y axis')
+plt.xlabel('X axis')
+
+plt.show()
+
+####################################
+from matplotlib import pyplot as plt
+from matplotlib import style
+
+style.use('ggplot')
+
+x = [5,8,10]
+y = [12,16,6]
+
+x2 = [6,9,11]
+y2 = [6,15,7]
+
+plt.scatter(x, y)#, align='center')
+
+plt.scatter(x2, y2, color='g')#, align='center')
+
+
+plt.title('Epic Info')
+plt.ylabel('Y axis')
+plt.xlabel('X axis')
+#########################################
+
+from matplotlib import pyplot as plt
+from matplotlib import style
+
+style.use('ggplot')
+
+x = [5,8,10]
+y = [12,16,6]
+
+x2 = [6,9,11]
+y2 = [6,15,7]
+
+
+plt.bar(x, y, align='center')
+
+plt.bar(x2, y2, color='g', align='center')
+
+
+plt.title('Epic Info')
+plt.ylabel('Y axis')
+plt.xlabel('X axis')
+
+plt.show()
+
+======================================
+plt.show()
 
 
