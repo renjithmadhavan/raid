@@ -420,4 +420,137 @@ plt.show()
 ======================================
 plt.show()
 
+spark code 
+===================
 
+import glob
+import re
+import sys
+import os
+from pyspark.sql import SparkSession
+from datetime import datetime
+
+#pattern = '/home/rmadhavan/queries/q*sql'
+pattern = '/disk1/tpc-ds/impala-tpcds-kit/queries/q*sql'
+filelist = []
+for file in glob.glob(pattern):
+    filelist.append(file)
+
+def texttoint(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    return [ texttoint(x) for x in re.split('(\d+)', text) ]
+
+def filterstring(pattern, listname):
+    regex= re.compile(".*("+pattern+").*")
+    for i in listname:
+        if regex.search(str(i)):
+            return i
+
+
+filelist.sort(key=natural_keys)
+
+blacklist = ['q04.sql',
+'q10.sql',
+'q11.sql',
+'q13.sql',
+'q14.sql',
+'q16.sql',
+'q22.sql',
+'q23.sql',
+'q28.sql',
+'q29.sql',
+'q30.sql',
+'q35.sql',
+'q49.sql',
+'q50.sql',
+'q57.sql',
+'q61.sql',
+'q64.sql',
+'q72.sql',
+'q74.sql',
+'q75.sql',
+'q77.sql',
+'q78.sql',
+'q85.sql',
+'q87.sql',
+'q92.sql',
+'q93.sql',
+'q94.sql',
+'q95.sql',
+'q96.sql',
+'q97.sql',
+'q99.sql']
+
+list_blacklist=[]
+for i in blacklist:
+    list_blacklist.append(filterstring(i, filelist))
+
+for i in list_blacklist:
+    print(i)
+
+#sys.exit(0)
+
+for i in filelist:
+    print(i)
+
+
+results=[]
+
+logfile=sys.argv[1]
+#filename = '/disk1/tpc-ds/impala-tpcds-kit/queries/' + queryid
+#filelist = [filename]
+
+spark = SparkSession\
+  .builder\
+  .appName("Spark TPC DS")\
+  .enableHiveSupport()\
+  .getOrCreate()
+print("Spark Session started.")
+df1 = spark.sql("use tpcds_10")
+print("Connected to tpcds_10 database in Hive.")
+for i in filelist:
+    print(i)
+    print("The query currently being processed: " + i)
+    temp=[]
+    if i in list_blacklist:
+        start=datetime.now()
+        temp.append(i)
+        temp.append(start.strftime("%y/%m/%d %H:%M"))
+        temp.append(start.strftime("%y/%m/%d %H:%M"))
+        diff = 999999
+        temp.append(diff)
+    else:
+        with open(i) as f:
+            content = f.read()
+            t1 = content.split(';')[0]
+            temp.append(i)
+            start=datetime.now()
+            print("start time is : " + start.strftime("%y/%m/%d %H:%M"))
+            temp.append(start.strftime("%y/%m/%d %H:%M"))
+            try:
+                df1 = spark.sql(t1)
+                df1.show()
+                end=datetime.now()
+                temp.append(end.strftime("%y/%m/%d %H:%M"))
+                print("end time is : "+ end.strftime("%y/%m/%d %H:%M"))
+                diff=end-start
+                temp.append(diff.seconds)
+            except:
+                print("there is something wrong with " + i)
+                end=datetime.now()
+                temp.append(end.strftime("%y/%m/%d %H:%M"))
+                print("end time is : "+ end.strftime("%y/%m/%d %H:%M"))
+                diff = 999999
+                temp.append(diff)
+    results.append(temp)
+print("completed execution")
+
+#logfile='out_' + datetime.now().strftime('%y%m%d%H%M%S') + '.log'
+
+with open(logfile, 'w') as o:
+    for i in results:
+        print(i)
+        t1 = ','.join(map(str, i))
+        o.write(t1 +'\n')
