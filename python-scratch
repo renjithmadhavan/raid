@@ -430,8 +430,7 @@ import os
 from pyspark.sql import SparkSession
 from datetime import datetime
 
-#pattern = '/home/rmadhavan/queries/q*sql'
-pattern = '/disk1/tpc-ds/impala-tpcds-kit/queries/q*sql'
+pattern = '/q*sql'
 filelist = []
 for file in glob.glob(pattern):
     filelist.append(file)
@@ -499,8 +498,7 @@ for i in filelist:
 results=[]
 
 logfile=sys.argv[1]
-#filename = '/disk1/tpc-ds/impala-tpcds-kit/queries/' + queryid
-#filelist = [filename]
+
 
 spark = SparkSession\
   .builder\
