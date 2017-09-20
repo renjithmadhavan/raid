@@ -552,3 +552,14 @@ with open(logfile, 'w') as o:
         print(i)
         t1 = ','.join(map(str, i))
         o.write(t1 +'\n')
+
+
+
+Find Probability from Z score 
+=======================================
+
+>>> import scipy.stats as st
+>>> st.norm.ppf(.95)
+1.6448536269514722
+>>> st.norm.cdf(1.64)
+0.94949741652589625
