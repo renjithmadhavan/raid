@@ -1,3 +1,619 @@
+Data Camp Notes
+=======================================
+
+type(a)
+convert into another datatype str(), int(), float() and bool()
+ 
+ to delete an element from a list 
+ 
+ x = ["a", "b", "c", "d"]
+del(x[1])
+
+careful when copying lists 
+# Create list areas
+areas = [11.25, 18.0, 20.0, 10.75, 9.50]
+# Create areas_copy
+areas_copy = list(areas)
+# Change areas_copy
+areas_copy[0] = 5.0
+# Print areas
+print(areas)
+
+help function
+==================
+help(max)
+
+
+sort a list
+================
+full = [11.25, 18.0, 20.0]
+# Sort full in descending order: full_sorted
+full_sorted = sorted(full, reverse=True)
+
+
+
+list methods - index and count
+append()
+remove()
+reverse()
+
+numpy array 
+=================
+
+create a numpy array from list
+baseball = [180, 215, 210, 210, 188, 176, 209, 200]
+np_baseball = np.array(baseball)
+
+high = np_baseball > 215
+np_baseball[high]
+
+numpy is great for doing vector arithmetic. numpy arrays cannot contain elements with different types.
+
+
+print the shape of a numpy array
+==================================
+shape()
+
+np.mean()
+np.median()
+np.std()
+to find correlation
+np.corrcoef()
+
+
+positions = ['GK', 'M', 'A', 'D', ...]
+heights = [191, 184, 185, 180, ...]
+np_positions = np.array(positions)
+np_heights = np.array(heights)
+gk_heights = np_heights[np_positions == 'GK']
+other_heights = np_heights[np_positions != 'GK' ]
+print("Median height of goalkeepers: " + str(np.median(gk_heights)))
+print("Median height of other players: " + str(np.median(other_heights)))
+
+
+matplotlib
+========================
+
+line plot
+
+there are 2 lists:
+1. year
+2. pop ( population )
+
+import matplotlib.pyplot as plt
+
+plt.plot(year,pop)
+plt.show()
+
+----
+
+life_exp 
+gdp_cap
+plt.scatter(gdp_cap, life_exp)
+plt.xscale('log')
+plt.show()
+
+------
+
+histogram
+plt.hist(life_exp, bins = 5)
+plt.show()
+plt.clf()  # cleans up so to start again
+plt.hist(life_exp, bins = 20)
+plt.show()
+plt.clf()
+
+
+--- with labels ------------
+# Basic scatter plot, log scale
+plt.scatter(gdp_cap, life_exp)
+plt.xscale('log') 
+# Strings
+xlab = 'GDP per Capita [in USD]'
+ylab = 'Life Expectancy [in years]'
+title = 'World Development in 2007'
+# Add axis labels
+plt.xlabel(xlab)
+plt.ylabel(ylab)
+# Add title
+plt.title(title)
+
+tick_val = [1000,10000,100000]
+tick_lab = ['1k','10k','100k']
+plt.xticks(tick_val, tick_lab)
+
+# After customizing, display the plot
+plt.show()
+
+-------
+add a thrid variable to the plot
+
+np_pop = np.array(pop)
+np_pop = np_pop*2
+plt.scatter(gdp_cap, life_exp, s = np_pop)
+plt.xscale('log') 
+plt.xlabel('GDP per Capita [in USD]')
+plt.ylabel('Life Expectancy [in years]')
+plt.title('World Development in 2007')
+plt.xticks([1000, 10000, 100000],['1k', '10k', '100k'])
+plt.show()
+
+--------------------
+
+add color
+
+plt.scatter(x = gdp_cap, y = life_exp, s = np.array(pop) * 2, c = col, alpha=0.8)
+
+plt.xscale('log') 
+plt.xlabel('GDP per Capita [in USD]')
+plt.ylabel('Life Expectancy [in years]')
+plt.title('World Development in 2007')
+plt.xticks([1000,10000,100000], ['1k','10k','100k'])
+
+# Additional customizations
+plt.text(1550, 71, 'India')
+plt.text(5700, 80, 'China')
+
+# Add grid() call
+plt.grid(True)
+
+plt.show()
+plt.clf()
+
+------------------------
+
+dictionaries
+countries = ['spain', 'france', 'germany', 'norway']
+capitals = ['madrid', 'paris', 'berlin', 'oslo']
+
+ind_ger = countries.index('germany')
+print(capitals[ind_ger])
+
+
+europe = {'spain':'madrid', 'france':'paris', 'germany':'berlin', 'norway':'oslo' }
+# Add italy to europe
+europe['italy'] = 'rome'
+# Print out italy in europe
+print('italy' in europe)
+# Add poland to europe
+europe['poland'] = 'warsaw'
+# Print europe
+print(europe)
+
+# Definition of dictionary
+europe = {'spain':'madrid', 'france':'paris', 'germany':'bonn', 
+          'norway':'oslo', 'italy':'rome', 'poland':'warsaw', 
+          'australia':'vienna' }
+# Update capital of germany
+europe['germany'] = 'berlin'
+# Remove australia
+del(europe['australia'])
+# Print europe
+print(europe)
+
+------------- dictionary of dictionaries -----------------
+# Dictionary of dictionaries
+europe = { 'spain': { 'capital':'madrid', 'population':46.77 },
+           'france': { 'capital':'paris', 'population':66.03 },
+           'germany': { 'capital':'berlin', 'population':80.62 },
+           'norway': { 'capital':'oslo', 'population':5.084 } }
+           
+           
+# Print out the capital of France
+print(europe['france']['capital'])
+
+# Create sub-dictionary data
+data = { 'capital':'rome', 'population':59.83}
+
+# Add data to europe under key 'italy'
+europe['italy'] = data
+
+# Print europe
+print(europe)
+
+
+------------------------------------- pandas ----------------
+# Pre-defined lists
+names = ['United States', 'Australia', 'Japan', 'India', 'Russia', 'Morocco', 'Egypt']
+dr =  [True, False, False, False, True, True, True]
+cpc = [809, 731, 588, 18, 200, 70, 45]
+
+my_dict = { 'country':names,
+         'drives_right':dr,
+         'cars_per_cap':cpc}
+cars = pd.DataFrame(my_dict)
+print(cars)
+
+
+--- row labels ----------
+# Build cars DataFrame
+names = ['United States', 'Australia', 'Japan', 'India', 'Russia', 'Morocco', 'Egypt']
+dr =  [True, False, False, False, True, True, True]
+cpc = [809, 731, 588, 18, 200, 70, 45]
+dict = { 'country':names, 'drives_right':dr, 'cars_per_cap':cpc }
+cars = pd.DataFrame(dict)
+print(cars)
+
+# Definition of row_labels
+row_labels = ['US', 'AUS', 'JAP', 'IN', 'RU', 'MOR', 'EG']
+
+# Specify row labels of cars
+cars.index = row_labels
+
+# Print cars again
+print(cars)
+
+----------------
+
+read csv file
+
+cars = pd.read_csv('cars.csv', index_col = 0)
+# Print out country column as Pandas Series
+print(cars['country'])
+
+# Print out country column as Pandas DataFrame
+print(cars[['country']])
+
+# Print out DataFrame with country and drives_right columns
+print(cars[['country', 'drives_right']])
+
+# Print out first 3 observations
+print(cars[0:3])
+
+# Print out fourth, fifth and sixth observation
+print(cars[3:6])
+
+loc and iloc
+# Print out observation for Japan
+print(cars.loc['JAP'])
+
+# Print out observations for Australia and Egypt
+print(cars.loc[['AUS', 'EG']])
+
+# Print out drives_right value of Morocco
+print(cars.loc['MOR', 'drives_right'])
+
+# Print sub-DataFrame
+print(cars.loc[['RU','MOR'],['country','drives_right']])
+
+# Print out drives_right column as Series
+print(cars.iloc[:, 2])
+
+# Print out drives_right column as DataFrame
+print(cars.iloc[:,[ 2]])
+
+# Print out cars_per_cap and drives_right as DataFrame
+print(cars.iloc[:, [0,2]])
+
+
+
+----------------- comparison -----------
+
+my_house = np.array([18.0, 20.0, 10.75, 9.50])
+your_house = np.array([14.0, 24.0, 14.25, 9.0])
+
+print(my_house[(my_house >= 18) == True ])
+print(my_house[(my_house < your_house ) == True])
+
+and or not
+
+my_kitchen = 18.0
+your_kitchen = 14.0
+print(my_kitchen > 10 and my_kitchen > 18)
+print(my_kitchen < 14 or my_kitchen > 17)
+print(2*my_kitchen < 3*your_kitchen)
+
+----------------   boolean operators numpy   ---------------
++my_house = np.array([18.0, 20.0, 10.75, 9.50])
+your_house = np.array([14.0, 24.0, 14.25, 9.0])
+print(np.logical_or(my_house > 18.5, my_house < 10))
+print(np.logical_and(my_house < 11, your_house<11))
+print(np.logical_and(my_house < 11, your_house<11))
+
+
+if else
+------------------
+area = 10.0
+if(area < 9) :
+    print("small")
+elif(area < 12) :
+    print("medium")
+else :
+    print("large")
+
+
+if room == "kit" :
+    print("looking around in the kitchen.")
+    
+# if-else construct for room
+if room == "kit" :
+    print("looking around in the kitchen.")
+else :
+    print("looking around elsewhere.")
+    
+
+if area > 15 :
+    print("big place!")
+elif area > 10 :
+    print("medium size, nice!")
+else :
+    print("pretty small.")
+    
+
+
+----------------
+
+cars = pd.read_csv('cars.csv', index_col = 0)
+
+cpc = cars['cars_per_cap']
+between = np.logical_and(cpc > 100, cpc < 500)
+medium = cars[between]
+
+
+-----------------------
+
+while loop
+offset = 8
+
+while offset != 0 :
+    print("correcting...")
+    offset = offset - 1
+    print(offset)
+    
+offset = -6
+while offset != 0 :
+    print("correcting...")
+    if offset > 0 :
+        offset = offset - 1
+    else:
+        offset = offset + 1
+    print(offset)
+
+
+for loop
+------------------------
+# areas list
+areas = [11.25, 18.0, 20.0, 10.75, 9.50]
+
+# Code the for loop
+for index, area in enumerate(areas) :
+    print("room " + str(index + 1) + ": " + str(area))
+    
+
+looping over dictionary
+==================================
+
+# Definition of dictionary
+europe = {'spain':'madrid', 'france':'paris', 'germany':'bonn', 
+          'norway':'oslo', 'italy':'rome', 'poland':'warsaw', 'australia':'vienna' }
+          
+# Iterate over europe
+for key, value in europe.items() :
+    print("the capital of " + str(key) + " is " + str(value))
+    
+
+loop over numpy arrays
+===================================
+ 1- D array
+ 
+ for x in np_height :
+    print(str(x) + " inches")
+    
+ 2 -D Array
+ 
+ # For loop over np_baseball
+for x in np.nditer(np_baseball) :
+    print(str(x))
+    
+
+Loop over dataframe
+====================================
+
+cars = pd.read_csv('cars.csv', index_col = 0)
+
+# Iterate over rows of cars
+for lab, row in cars.iterrows() :
+    print(lab)
+    print(row)
+    
+another format
+-------------------------
+for lab, row in cars.iterrows() :
+    print(str(lab) + ": " + str(row['cars_per_cap']))
+    
+
+
+add a new column
+------------------------
+
+for lab, row in cars.iterrows() :
+    cars.loc[lab, "COUNTRY"] = row["country"].upper()
+    
+another way using the apply function
+-----------------------------------------
+
+# Use .apply(str.upper)
+cars["COUNTRY"] = cars["country"].apply(str.upper)
+
+random numbers 
+--------------------------
+
+# Set the seed
+np.random.seed(123)
+
+# Generate and print random float
+print(np.random.rand())
+
+# Use randint() to simulate a dice
+print(np.random.randint(1,7))
+
+
+random walk 
+----------------------------
+# Initialize random_walk
+random_walk = [0,3,4]
+
+# Complete the ___
+for x in range(100) :
+    # Set step: last element in random_walk
+    step = random_walk[-1]
+    
+    # Roll the dice
+    dice = np.random.randint(1,7)
+    
+    # Determine next step
+    if dice <= 2:
+        step = step - 1
+    elif dice <= 5:
+        step = step + 1
+    else:
+        step = step + np.random.randint(1,7)  
+ 
+ visualize a random walk
+ ---------------------------------------
+  
+np.random.seed(123)
+random_walk = [0]
+
+for x in range(100) :
+    step = random_walk[-1]
+    dice = np.random.randint(1,7)
+  
+    if dice <= 2:
+        step = max(0, step - 1)
+    elif dice <= 5:
+        step = step + 1
+    else:
+        step = step + np.random.randint(1,7)  
+      
+    random_walk.append(step)
+
+# Import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+# Plot random_walk
+plt.plot(random_walk)
+
+# Show the plot
+plt.show()
+
+plot multiple random walks
+---------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+np.random.seed(123)
+all_walks = []
+for i in range(10) :
+    random_walk = [0]
+    for x in range(100) :
+        step = random_walk[-1]
+        dice = np.random.randint(1,7)
+        if dice <= 2:
+            step = max(0, step - 1)
+        elif dice <= 5:
+            step = step + 1
+        else:
+            step = step + np.random.randint(1,7)  
+        random_walk.append(step)
+    all_walks.append(random_walk)
+
+# Convert all_walks to Numpy array: np_aw
+np_aw = np.array(all_walks)
+
+# Plot np_aw and show
+plt.plot(np_aw)
+plt.show()
+# Clear the figure
+plt.clf()
+
+# Transpose np_aw: np_aw_t
+np_aw_t = np.transpose(np_aw)
+
+# Plot np_aw_t and show
+plt.plot(np_aw_t)
+plt.show()
+
+
+implement clumsiness in walking and visualize it
+--------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+np.random.seed(123)
+all_walks = []
+
+# Simulate random walk 250 times
+for i in range(250) :
+    random_walk = [0]
+    for x in range(100) :
+        step = random_walk[-1]
+        dice = np.random.randint(1,7)
+        if dice <= 2:
+            step = max(0, step - 1)
+        elif dice <= 5:
+            step = step + 1
+        else:
+            step = step + np.random.randint(1,7)  
+        
+        # Implement clumsiness
+        if np.random.rand() <= 0.001 :
+            step = 0
+            
+        random_walk.append(step)
+    all_walks.append(random_walk)
+
+# Create and plot np_aw_t
+np_aw_t = np.transpose(np.array(all_walks))
+plt.plot(np_aw_t)
+plt.show()
+
+
+
+---------- plot the distribution --------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+np.random.seed(123)
+all_walks = []
+
+# Simulate random walk 5000 times
+for i in range(5000) :
+    random_walk = [0]
+    for x in range(100) :
+        step = random_walk[-1]
+        dice = np.random.randint(1,7)
+        if dice <= 2:
+            step = max(0, step - 1)
+        elif dice <= 5:
+            step = step + 1
+        else:
+            step = step + np.random.randint(1,7)  
+        if np.random.rand() <= 0.001 :
+            step = 0
+        random_walk.append(step)
+    all_walks.append(random_walk)
+
+# Create and plot np_aw_t
+np_aw_t = np.transpose(np.array(all_walks))
+
+# Select last row from np_aw_t: ends
+ends = np_aw_t[-1]
+
+# Plot histogram of ends, display plot
+plt.hist(ends)
+plt.show()
+
+
+------------------------------------
+
+
+
+
+
+
+
+
 Writing to a file
 =======================
 
