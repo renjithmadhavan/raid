@@ -1,3 +1,8 @@
 ## install ubuntu 16.04
 sudo apt-get update
 wget https://repo.continuum.io/archive/Anaconda3-5.0.0.1-Linux-x86_64.sh
+conda install wtforms
+conda install passlib
+sudo apt-get install python-mysqldb
+conda install dbconnect
+conda install pymysql
