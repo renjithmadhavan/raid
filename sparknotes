@@ -1,0 +1,7 @@
+from pyspar.sql import SparkSession
+from pyspark.sql.types import *
+from pyspark.sql.functions import monotonically_increasing_id, exp
+
+spark = SparkSession.builder.appName("test").getOrCreate()
+spark.sparkContext.setLogLevel("ERROR")
+
